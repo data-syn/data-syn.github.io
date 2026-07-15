@@ -2,260 +2,252 @@
 @font-face {
   font-family: 'TeX Gyre Pagella';
   src: url('../fonts/texgyrepagella-regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+  font-weight: normal; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'TeX Gyre Pagella';
   src: url('../fonts/texgyrepagella-italic.otf') format('opentype');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
+  font-weight: normal; font-style: italic; font-display: swap;
 }
 @font-face {
   font-family: 'TeX Gyre Pagella';
   src: url('../fonts/texgyrepagella-bold.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
+  font-weight: bold; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'TeX Gyre Pagella';
   src: url('../fonts/texgyrepagella-bolditalic.otf') format('opentype');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
+  font-weight: bold; font-style: italic; font-display: swap;
 }
 
 :root {
   --accent: #2455A4;
   --accent-dark: #1B3F7A;
-  --accent-soft: #EDF2FA;
-  --interference: #B4534E;
   --ink: #16181D;
+  --ink-soft: #454A54;
+  --ink-faint: #6B7280;
+  --line: #E5E7EB;
+  --ground: #FFFFFF;
+  --negative: #B4534E;
   --palatino: 'TeX Gyre Pagella', 'Palatino Linotype', 'Palatino', 'URW Palladio L', 'Book Antiqua', Georgia, serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
+/* ---------- Base ---------- */
+html { background: var(--ground); }
 body {
   font-family: var(--palatino);
   color: var(--ink);
+  font-size: 1.06rem;
+  line-height: 1.65;
+  background: var(--ground);
 }
+.title, .subtitle { font-family: var(--palatino); color: var(--ink); }
 
-.title, .subtitle {
-  font-family: var(--palatino);
-  color: var(--ink);
-}
+/* Strip Bulma's tinted hero/section backgrounds and heavy padding -> flat white */
+.hero, .hero.is-light, .hero-body { background: transparent !important; }
+.hero-body { padding: 0; }
+.section { padding: 2.2rem 1.25rem; background: transparent; }
 
-.subtitle {
-  font-size: 0.98rem;
-  color: #4a4d55;
-  line-height: 1.55;
-}
+/* Two-width system: wide band for figures, narrow measure for text */
+.container.is-max-desktop { max-width: 56rem; }
+.section .content,
+.section > .container > .columns > .column > .subtitle,
+.teaser .subtitle,
+.hero-body > .container > .subtitle { max-width: 45rem; margin-left: auto; margin-right: auto; }
 
-.footer .icon-link {
-    font-size: 25px;
-    color: #000;
-}
+/* Hairline separators between content sections */
+.section { border-top: 1px solid var(--line); }
 
-.link-block a {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+/* Left-align section headings and prose (hero stays centered) */
+.section .has-text-centered { text-align: left; }
+.section .content.has-text-justified { text-align: left; }
+.teaser .subtitle, .section .subtitle { text-align: left; }
 
-.teaser .hero-body {
-  padding-top: 0;
-  padding-bottom: 3rem;
-}
-
-.teaser {
-  font-family: var(--palatino);
-}
-
-.publication-title {
-    font-family: var(--palatino);
-    font-weight: bold;
-    text-wrap: balance;
-}
-
-.publication-authors {
-    font-family: var(--palatino);
-}
-
-.publication-venue {
-    color: #555;
-    width: fit-content;
-    font-weight: bold;
-}
-
-.publication-awards {
-    color: #ff3860;
-    width: fit-content;
-    font-weight: bolder;
-}
-
-.publication-authors a {
-   color: var(--accent) !important;
-}
-
-.publication-authors a:hover {
-    text-decoration: underline;
-}
-
-.author-block {
-  display: inline-block;
-}
-
-/* navy link pills, as in the standalone site */
-.publication-links .external-link.button.is-dark {
-  background-color: var(--accent-dark);
-  transition: background-color 0.15s ease;
-}
-
-.publication-links .external-link.button.is-dark:hover {
-  background-color: var(--accent);
-}
-
-.publication-video {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%;
-    overflow: hidden;
-    border-radius: 10px !important;
-}
-
-.publication-video iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.results-carousel {
-  overflow: hidden;
-}
-
-.results-carousel .item {
-  margin: 5px;
-  overflow: hidden;
-  padding: 20px;
-  font-size: 0;
-}
-
-.results-carousel video {
-  margin: 0;
-}
-
-.slider-pagination .slider-page {
-  background: #000000;
-}
-
-.eql-cntrb {
-  font-size: smaller;
-}
-
-/* content links */
-.content a {
+/* ---------- Hero ---------- */
+.hero .hero-body:first-child, section.hero:first-of-type .hero-body { padding-top: 3.5rem; }
+.publication-venue-badge {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--accent);
+  margin-bottom: 1.1rem;
 }
+.publication-title.title.is-1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: bold;
+  line-height: 1.18;
+  text-wrap: balance;
+  margin-bottom: 1.4rem;
+}
+.publication-authors { font-family: var(--palatino); font-size: 1.12rem !important; line-height: 1.85; }
+.publication-authors a { color: var(--accent) !important; text-decoration: none; }
+.publication-authors a:hover { text-decoration: underline; }
+.author-block { display: inline-block; }
+.publication-affil { font-size: 0.96rem !important; color: var(--ink-soft); margin-top: 0.2rem; }
+.publication-affil sup { color: var(--ink-faint); }
 
-/* TL;DR callout */
+/* Link row: quiet hairline-outlined text buttons, no icons, no fill */
+.publication-links { margin-top: 1.4rem; }
+.publication-links .button,
+.publication-links .external-link.button.is-dark {
+  background: transparent !important;
+  color: var(--ink-soft) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 6px !important;
+  font-family: var(--palatino);
+  font-weight: 500;
+  box-shadow: none !important;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.publication-links .button:hover,
+.publication-links .external-link.button.is-dark:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: transparent !important;
+}
+.publication-links .icon { display: none !important; }
+.link-block a { margin: 5px 3px; }
+
+/* ---------- TL;DR: between hairline rules, no fill ---------- */
 .tldr-box {
-  max-width: 760px;
-  margin: 0 auto;
+  max-width: 45rem;
+  margin: 2.2rem auto 0;
   text-align: left;
-  background: var(--accent-soft);
-  border-left: 4px solid var(--accent);
-  border-radius: 4px;
-  padding: 1.1rem 1.4rem;
-  font-size: 1.05rem;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 1.2rem 0.25rem;
+  font-size: 1.02rem;
   line-height: 1.6;
 }
-
 .tldr-box .tldr-label {
   display: block;
   font-size: 0.78rem;
   font-weight: bold;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
 }
 
-/* stat highlight cards */
+/* ---------- Section headings ---------- */
+.title.is-3, .hero.is-small .title, #BibTeX .title {
+  font-size: 1.55rem;
+  font-weight: bold;
+  text-align: left;
+  letter-spacing: -0.005em;
+  margin-bottom: 1.1rem;
+}
+
+/* ---------- Figures ---------- */
+.teaser .hero-body { padding-top: 0; padding-bottom: 2.6rem; }
+figure, .section img, .teaser img { margin: 0; }
+.section img, .teaser img { display: block; background: #fff; border-radius: 4px; }
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-top: 0.7rem !important;
+}
+.subtitle b, .subtitle strong { color: var(--ink); }
+
+/* ---------- Prose ---------- */
+.content { color: var(--ink); }
+.content a { color: var(--accent); }
+.content p + p { margin-top: 0.9rem; }
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--ink);
+  background: #F5F6F8;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.05em 0.34em;
+}
+
+/* ---------- Stat highlights: minimal, no cards ---------- */
 .stat-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem auto;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  max-width: 45rem;
+  margin: 1.6rem auto 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
 }
-
-.stat-card {
-  background: #fff;
-  border: 1px solid #e2e5ec;
-  border-radius: 6px;
-  padding: 1.2rem 1rem;
-  text-align: center;
-}
-
+.stat-card { background: transparent; border: 0; border-radius: 0; padding: 0; text-align: left; }
 .stat-card .stat-value {
-  font-size: 1.9rem;
-  font-weight: bold;
-  color: var(--accent);
+  font-size: 1.9rem; font-weight: bold; color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
+.stat-card .stat-value.negative { color: var(--negative); }
+.stat-card .stat-label { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.2rem; line-height: 1.4; }
 
-.stat-card .stat-value.negative {
-  color: var(--interference);
-}
-
-.stat-card .stat-label {
-  font-size: 0.9rem;
-  color: #4a4d55;
-  margin-top: 0.3rem;
-  line-height: 1.4;
-}
-
-/* results table */
+/* ---------- Results table: hairline, no Bulma borders/stripes ---------- */
+.table-container { max-width: 45rem; margin: 1.4rem auto 0; }
 .table {
   font-variant-numeric: tabular-nums;
+  font-size: 0.97rem;
+  background: transparent;
 }
+.table.is-bordered td, .table.is-bordered th,
+.table td, .table th { border: 0; border-bottom: 1px solid var(--line); padding: 0.45rem 0.9rem; }
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) { background: transparent; }
+.table thead th { color: var(--ink-faint); font-weight: bold; border-bottom: 1px solid var(--line); }
+.table tbody td b { color: var(--accent); }
+.table td.has-text-left, .table .has-text-left { text-align: left; color: var(--ink-faint); font-style: italic; }
 
-.table thead th {
-  color: var(--accent-dark);
-}
+/* ---------- PDF embed ---------- */
+.hero.is-small .hero-body { padding: 1rem 1.25rem 0; }
+#BibTeX + section iframe, .hero.is-small iframe { border: 1px solid var(--line); border-radius: 6px; }
 
-/* bibtex */
+/* ---------- BibTeX ---------- */
 #BibTeX pre {
-  background: #f6f7f9;
-  border: 1px solid #e2e5ec;
+  background: transparent;
+  border: 1px solid var(--line);
   border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  color: var(--ink-soft);
 }
-
-.bibtex-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-}
-
-.bibtex-header .title {
-  margin-bottom: 0;
-}
-
+.bibtex-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.bibtex-header .title { margin-bottom: 0; }
 .copy-bibtex-btn {
-  border: 1px solid #d5d9e2;
-  background: #fff;
+  border: 1px solid var(--line);
+  background: transparent;
   border-radius: 6px;
-  padding: 0.4rem 0.9rem;
+  padding: 0.35rem 0.85rem;
   font-family: var(--palatino);
   font-size: 0.9rem;
   cursor: pointer;
-  color: var(--accent-dark);
+  color: var(--ink-soft);
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
+.copy-bibtex-btn:hover { color: var(--accent); border-color: var(--accent); background: transparent; }
 
-.copy-bibtex-btn:hover {
-  background: var(--accent-soft);
+/* ---------- Equations: hand-set in the serif, matching the body ---------- */
+.eq {
+  font-family: var(--palatino);
+  font-size: 1.18rem;
+  text-align: center;
+  line-height: 1.5;
+  margin: 1.4rem auto;
+  max-width: 45rem;
+  overflow-x: auto;
+  color: var(--ink);
 }
+.eq i { font-style: italic; }
+.eq sub, .eq sup { font-size: 0.68em; font-style: normal; }
+
+/* ---------- Footer: hairline, quiet ---------- */
+.footer {
+  background: transparent;
+  border-top: 1px solid var(--line);
+  padding: 1.8rem 1.25rem 2.6rem;
+}
+.footer .content p { font-size: 0.85rem; color: var(--ink-faint); }
+.footer a { color: var(--accent); }

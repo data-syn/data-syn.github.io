@@ -34,14 +34,6 @@
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
 
-  <!-- MathJax for equations -->
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 <body>
 
@@ -51,6 +43,7 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
+            <div class="publication-venue-badge"></div>
             <h1 class="title is-1 publication-title">Domain-Aware Scaling Laws Uncover Data Synergy</h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
@@ -62,15 +55,15 @@
                   </span>
                   </div>
 
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block"><sup>1</sup>MIT CSAIL &nbsp;&nbsp; <sup>2</sup>Microsoft Research &nbsp;&nbsp; <sup>3</sup>Harvard University<br>COLM 2026</span>
+                  <div class="is-size-5 publication-authors publication-affil">
+                    <span class="author-block"><sup>1</sup>MIT CSAIL &nbsp;&nbsp; <sup>2</sup>Microsoft Research &nbsp;&nbsp; <sup>3</sup>Harvard University</span>
                   </div>
 
                   <div class="column has-text-centered">
                     <div class="publication-links">
                       <!-- Paper PDF link -->
                       <span class="link-block">
-                        <a href="static/pdfs/paper.pdf" target="_blank"
+                        <a href="https://arxiv.org/pdf/2607.11052" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
@@ -90,12 +83,12 @@
                 </span>
 
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/2607.11052" target="_blank"
+                  <a href="#BibTeX"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
-                    <i class="ai ai-arxiv"></i>
+                    <i class="fas fa-quote-left"></i>
                   </span>
-                  <span>arXiv</span>
+                  <span>BibTeX</span>
                 </a>
               </span>
             </div>
@@ -103,7 +96,7 @@
 
           <div class="tldr-box">
             <span class="tldr-label">TL;DR</span>
-            Tokens are not interchangeable: <i>what kinds of data are combined</i> in pretraining matters. We extend scaling laws with per-domain and pairwise synergy terms, fit them purely on open-weight models, and the estimates are accurate enough to design better pretraining mixtures.
+            Pretraining data domains interact, and <i>what kinds of data are combined</i> in pretraining matters. We extend scaling laws with per-domain and pairwise synergy terms, fit them on open-data models, and show the estimates help predict model performance, and curate better pretraining mixtures.
           </div>
         </div>
       </div>
@@ -118,7 +111,7 @@
     <div class="hero-body">
       <img src="static/images/intro_fig.png" alt="Two forms of data synergy: per-domain scaling rate adjustments and pairwise domain interactions that act as bonus tokens." style="width: 100%;"/>
       <h2 class="subtitle has-text-centered">
-        <b>Two forms of data synergy.</b> <i>Left:</i> each pretraining domain modifies the <i>rate</i> at which additional data reduces loss on a benchmark, captured by a per-domain adjustment $\gamma_{\text{domain}}$ to the data scaling exponent. <i>Right:</i> when two synergistic domains co-occur, their pairwise interaction $\sigma_{kk'}$ contributes &ldquo;bonus&rdquo; tokens, so the corpus behaves as if it had a larger effective data size $D_{\textit{eff}} > D$.
+        <b>Two forms of data synergy.</b> <i>Left:</i> each pretraining domain modifies the <i>rate</i> at which additional data reduces loss on a benchmark, captured by a per-domain adjustment <i>&gamma;</i><sub>domain</sub> to the data scaling exponent. <i>Right:</i> when two synergistic domains co-occur, their pairwise interaction <i>&sigma;<sub>kk&prime;</sub></i> contributes &ldquo;bonus&rdquo; tokens, so the corpus behaves as if it had a larger effective data size <i>D</i><sub>eff</sub> &gt; <i>D</i>.
       </h2>
     </div>
   </div>
@@ -148,15 +141,15 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <h2 class="title is-3">The data scaling exponent depends on the pretraining mixture</h2>
+        <h2 class="title is-3">Tokens are not interchangeable</h2>
         <div class="content has-text-justified">
           <p>
-            Classical scaling laws relate loss to parameter count and total token count, assuming all tokens contribute equally. But models pretrained on different mixtures scale differently on the same benchmark. On <code>HumanEval</code>, a single domain-agnostic exponent fits poorly ($R^2 = 0.17$), while allowing a per-mixture exponent captures the variation ($R^2 = 1.00$): removing code or math data <i>reduces</i> the data scaling exponent, while the full mixture scales faster.
+            Classical scaling laws relate loss to parameter count and total tokens, and treat every token as equal. But models with the same total tokens and different mixtures land in very different places. On <code>HumanEval</code>, a single domain-agnostic exponent fits poorly (<i>R</i><sup>2</sup> = 0.17), while letting the exponent depend on the mixture fits almost perfectly (<i>R</i><sup>2</sup> = 1.00): removing code or math data visibly slows the rate at which more data helps.
           </p>
         </div>
         <img src="static/images/scaling_comparison.png" alt="HumanEval loss vs. tokens: one shared scaling exponent fits poorly, per-mixture exponents fit well." style="width: 100%;"/>
         <h2 class="subtitle has-text-centered" style="margin-top: 1rem;">
-          <b>A motivating example on <code>HumanEval</code>.</b> The data exponent $\beta$ falls from $0.45$ under the full <code>dolma1.7</code> mixture to $0.18$ once code is removed.
+          <b>A motivating example on <code>HumanEval</code>.</b> The data exponent <i>&beta;</i> falls from 0.45 under the full <code>dolma1.7</code> mixture to 0.18 once code is removed.
         </h2>
       </div>
     </div>
@@ -173,18 +166,24 @@
         <h2 class="title is-3">Domain-aware scaling laws</h2>
         <div class="content has-text-justified">
           <p>
-            We start from the Chinchilla form $L(N, D) = L_\infty + A N^{-\alpha} + B D^{-\beta}$ and progressively make the <i>data</i> term composition-aware, while preserving the overall shape of the law.
+            We start from the Chinchilla form <i>L</i>(<i>N</i>, <i>D</i>) = <i>L</i><sub>&infin;</sub> + <i>A&thinsp;N</i><sup>&minus;&alpha;</sup> + <i>B&thinsp;D</i><sup>&minus;&beta;</sup> and progressively make the <i>data</i> term composition-aware, while preserving the overall shape of the law.
           </p>
           <p>
-            <b>First-order domain&rarr;benchmark synergy.</b> Each training domain $k$ gets a per-benchmark coefficient $\gamma_{j,k}$ that additively modifies the data scaling exponent, $\beta_j + \gamma_{j,k}$. With mixture shares $u_{i,k}$, the data term becomes
-            $$L_j(N_i, d_i, u_i) = L_{\infty,j} + A_j N_i^{-\alpha_j} + B_j\, d_i^{-\beta_j} \prod_k (u_{i,k}\, d_i)^{-\gamma_{j,k}\, u_{i,k}},$$
-            so a positive $\gamma_{j,k}$ means tokens from domain $k$ reduce loss on benchmark $j$ faster than the baseline rate (<i>synergy</i>), and a negative one means slower (<i>interference</i>).
+            <b>First-order domain&rarr;benchmark synergy.</b> Let <i>u<sub>k</sub></i> be the fraction of pretraining tokens drawn from domain <i>k</i>. Each domain gets a coefficient <i>&gamma;<sub>k</sub></i> that additively modifies the data scaling exponent, so its tokens reduce loss at rate <i>&beta;</i> + <i>&gamma;<sub>k</sub></i> instead of a single shared <i>&beta;</i>. Each domain rescales the data by a factor set by both its token share <i>u<sub>k</sub></i> and its absolute token count <i>u<sub>k</sub>D</i>:
+          </p>
+          <div class="eq"><i>L</i>(<i>N</i>, <i>D</i>, <i>u</i>) = <i>L</i><sub>&infin;</sub> + <i>A&thinsp;N</i><sup>&minus;&alpha;</sup> + <i>B&thinsp;D</i><sup>&minus;&beta;</sup> &prod;<sub><i>k</i></sub> (<i>u<sub>k</sub>D</i>)<sup>&minus;<i>&gamma;<sub>k</sub>u<sub>k</sub></i></sup></div>
+          <p>
+            Setting every <i>&gamma;<sub>k</sub></i> = 0 recovers Chinchilla, so the coefficients are modifications to the data scaling exponent: a positive <i>&gamma;<sub>k</sub></i> means tokens from domain <i>k</i> reduce loss faster than the baseline predicts (<i>synergy</i>), a negative one means slower (<i>interference</i>).
           </p>
           <p>
-            <b>Second-order domain&ndash;domain synergy.</b> Some gains only materialize when two domains <i>co-occur</i> in the corpus. We add a shared symmetric interaction matrix $\Sigma = \{\sigma_{kk'}\}$ whose pairwise term vanishes if either domain is absent and is bottlenecked by the scarcer domain (a softmin over per-domain log-token budgets). The result reads as a change in <i>effective</i> data size: co-occurring synergistic domains contribute benchmark-specific &ldquo;bonus tokens&rdquo; $D_{\textit{eff}} > D$, while interfering pairs shrink it.
+            <b>Second-order domain-domain synergy.</b> Some capabilities only emerge when two domains <i>co-occur</i> in the corpus. We add a shared, symmetric interaction matrix <i>&Sigma;</i> = {<i>&sigma;<sub>kk&prime;</sub></i>} with one pairwise term per domain pair. Its gain is bottlenecked by the scarcer domain (a softmin of the two per-domain log-token budgets), and since <i>z&#772;<sub>k</sub></i> = 0 when a domain is absent, it vanishes unless both domains are present. Because it carries the same <i>&beta;</i> as the baseline, the interaction can be written as a change in <i>effective</i> data size,
+          </p>
+          <div class="eq">log&thinsp;<i>D</i><sub>eff</sub> = log&thinsp;<i>D</i> + &sum;<sub><i>k</i>&lt;<i>k&prime;</i></sub> (<i>&gamma;<sub>k</sub></i> + <i>&gamma;<sub>k&prime;</sub></i>)&thinsp;<i>&sigma;<sub>kk&prime;</sub></i>&thinsp;softmin<sub>&tau;</sub>(<i>z&#772;<sub>k</sub></i>, <i>z&#772;<sub>k&prime;</sub></i>),&nbsp;&nbsp; where <i>z&#772;<sub>k</sub></i> = log(1 + <i>u<sub>k</sub>D</i>)</div>
+          <p>
+            so the data term scales as (<i>D</i><sub>eff</sub>)<sup>&minus;&beta;</sup>: co-occurring synergistic domains contribute &ldquo;bonus tokens&rdquo; (<i>D</i><sub>eff</sub> &gt; <i>D</i>), while interfering pairs shrink the effective dataset.
           </p>
           <p>
-            <b>Estimation from observational data.</b> All parameters are fit on 52 open-weight models (70M&ndash;20B parameters) spanning six model families with documented pretraining mixtures, mapped to eight domains (books, code, encyclopedia, legal, math, Q&amp;A, science, web) and evaluated on 11 benchmarks. We fit with a Huber loss, $\ell_1$/$\ell_2$ regularization, 5-fold cross-validation, and bootstrap uncertainty quantification.
+            <b>Estimation from observational data.</b> Rather than training a large controlled sweep, we fit these laws across 52 open-weight models (70M-20B parameters) from multiple groups (GPT-Neo/J/NeoX, Pythia, DataDecide, OLMo, OpenLLaMA, and RedPajama-INCITE), whose documented pretraining mixtures we map to eight domains (books, code, encyclopedia, legal, math, Q&amp;A, science, web) and evaluate on 11 benchmarks. 
           </p>
         </div>
       </div>
@@ -194,136 +193,45 @@
 <!-- End method -->
 
 
-<!-- First-order results -->
+<!-- Results -->
 <section class="section hero">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
-        <h2 class="title is-3">First-order synergy: which domains help which benchmarks</h2>
+        <h2 class="title is-3">What the synergies look like</h2>
+        <div class="content has-text-justified">
+          <p>
+            The strongest first-order synergies concentrate on code and math benchmarks (for example <i>&gamma;</i><sub>math</sub> = +1.34 and <i>&gamma;</i><sub>code</sub> = +0.47 on <code>HumanEval</code>), while books and encyclopedia data reliably interfere with code benchmarks. The first-order model reaches a median cross-validated <i>R</i><sup>2</sup> of 0.906, versus 0.41 (<code>HumanEval</code>) and 0.20 (<code>MBPP</code>) for the domain-agnostic baseline.
+          </p>
+        </div>
         <img src="static/images/synergy_fo.png" alt="Heatmap of first-order synergy coefficients between pretraining domains and benchmarks, per-benchmark data exponents, and top-20 synergies with confidence intervals." style="width: 100%;"/>
         <h2 class="subtitle has-text-centered" style="margin-top: 1rem;">
-          <b>Estimated domain&rarr;benchmark synergy.</b> <i>Left:</i> heatmap of $\gamma_{j,k}$ (median $\pm$ SE). <i>Center:</i> benchmark-specific data exponent $\beta_j$. <i>Right:</i> top 20 first-order synergies with 90% bootstrap confidence intervals.
+          <b>Estimated domain&rarr;benchmark synergy.</b> <i>Left:</i> heatmap of the synergy coefficients <i>&gamma;</i> (median &plusmn; SE) across domains and benchmarks. <i>Center:</i> the per-benchmark data exponent <i>&beta;</i>. <i>Right:</i> top 20 first-order synergies with 90% bootstrap confidence intervals.
         </h2>
         <div class="content has-text-justified">
           <p>
-            The strongest synergies appear for code and math benchmarks &mdash; e.g., on <code>HumanEval</code>, $\gamma_{\text{code}} = {+}0.47$ and $\gamma_{\text{math}} = {+}1.34$ &mdash; consistent with prior findings that math and code data reinforce each other. The same fit identifies reliable <i>interference</i>, most clearly from books and encyclopedia on code benchmarks. The first-order model reaches a median cross-validated $R^2$ of $0.906$ across benchmarks, versus $0.41$ (<code>HumanEval</code>) and $0.20$ (<code>MBPP</code>) for the domain-agnostic baseline.
+            The second-order fit adds the pairwise story: code&nbsp;&times;&nbsp;science (<i>&sigma;</i> = +2.55) and code&nbsp;&times;&nbsp;math (+2.40) are the strongest complements, worth more together than their first-order effects predict, while math&nbsp;&times;&nbsp;books is the clearest diluting pair. That last one is actionable: if a target benchmark wants math, tokens spent on books are not merely neutral filler, they subtract.
           </p>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End first-order results -->
-
-
-<!-- Second-order results -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">Second-order synergy: domain pairs that help only together</h2>
         <img src="static/images/synergy_so.png" alt="Pairwise domain-domain interaction matrix and the largest second-order synergies with confidence intervals." style="width: 100%;"/>
         <h2 class="subtitle has-text-centered" style="margin-top: 1rem;">
-          <b>Second-order domain&ndash;domain synergy.</b> <i>Left:</i> the shared pairwise interaction matrix $\Sigma$; positive entries show synergy, negative entries interference. <i>Right:</i> the largest second-order synergies with 90% bootstrap confidence intervals.
+          <b>Second-order domain-domain synergy.</b> <i>Left:</i> the shared pairwise interaction matrix <i>&Sigma;</i>; positive entries show synergy, negative entries interference. <i>Right:</i> the largest second-order synergies with 90% bootstrap confidence intervals.
         </h2>
         <div class="content has-text-justified">
           <p>
-            The largest pairwise interactions are $\sigma_{\text{code,science}} = {+}2.55$ and $\sigma_{\text{code,math}} = {+}2.40$: when code co-occurs with math or scientific data, the pair contributes more than the sum of the two domains&rsquo; first-order effects. The clearest negative interaction is math&nbsp;&times;&nbsp;books. A negative $\sigma$ is actionable &mdash; when a target benchmark favors one such domain, a mixture should not also spend tokens on its interfering partners.
+            We show that these estimated synergies and the domain-aware scaling laws predict the performance of held-out models more accurately. Finally, these estimates are <i>actionable</i>. We use the fitted laws to predict optimal and anti-optimal pretraining mixtures for three target tasks and training models from scratch at 30M and 150M parameters, and find that the optimal mixture outperforms the anti-optimal by up to 31% bits-per-byte on <code>HumanEval</code> (relative to a balanced baseline).
           </p>
-        </div>
-        <div class="stat-cards">
-          <div class="stat-card">
-            <div class="stat-value">+2.55</div>
-            <div class="stat-label">strongest pairwise synergy<br>code &times; science</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">+2.40</div>
-            <div class="stat-label">second strongest<br>code &times; math</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value negative">&minus;</div>
-            <div class="stat-label">clearest interference<br>math &times; books</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End second-order results -->
-
-
-<!-- Held-out prediction -->
-<section class="section hero">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">Synergy-aware laws predict held-out models better</h2>
-        <img src="static/images/kde_distributions.png" alt="Distributions of held-out prediction loss for the Chinchilla baseline and the first- and second-order synergy models across four benchmarks." style="width: 100%;"/>
-        <h2 class="subtitle has-text-centered" style="margin-top: 1rem;">
-          <b>Held-out prediction loss for three fitted scaling models.</b> Both synergy-aware models concentrate more density near zero than the domain-agnostic Chinchilla baseline, with the largest improvements on <code>HumanEval</code> and <code>IFEval</code>.
-        </h2>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End held-out prediction -->
-
-
-<!-- Validation -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">Validation: synergy estimates are actionable</h2>
-        <div class="content has-text-justified">
           <p>
-            To test whether the observational estimates are actionable, we use the fitted laws to predict <i>optimal</i> and <i>anti-optimal</i> pretraining mixtures for three target tasks, then train models at 30M and 150M parameters on each. The scaling law correctly predicts the ranking between optimal and anti-optimal mixtures for all tasks at both scales &mdash; on <code>HumanEval</code>, the optimal mixture improves bits-per-byte by 31% (relative to a balanced baseline) over the anti-optimal one.
+            These results turn the intuition that data composition matters into a measurable quantity we can optimize. We hope domain-aware scaling laws become a practical tool for curating pretraining mixtures, and a starting point for studying synergy across modalities, languages, and finer domain splits.
           </p>
         </div>
-        <div class="table-container">
-          <table class="table is-bordered is-striped is-fullwidth" style="margin: 0 auto;">
-            <thead>
-              <tr>
-                <th>Metric (BPB, &darr;)</th>
-                <th>Balanced</th>
-                <th>Optimal</th>
-                <th>Anti-optimal</th>
-                <th>Gap</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td colspan="5" class="has-text-left"><i>30M parameters, 3B tokens</i></td></tr>
-              <tr><td><code>HumanEval</code></td><td>1.268</td><td><b>1.110</b> (&minus;12.4%)</td><td>1.503 (+18.6%)</td><td>0.393</td></tr>
-              <tr><td><code>GSM8K</code></td><td>1.818</td><td><b>1.779</b> (&minus;2.1%)</td><td>1.935 (+6.5%)</td><td>0.156</td></tr>
-              <tr><td><code>IFEval</code></td><td><b>1.451</b></td><td>1.513 (+4.3%)</td><td>1.551 (+6.9%)</td><td>0.038</td></tr>
-              <tr><td colspan="5" class="has-text-left"><i>150M parameters, 5B tokens</i></td></tr>
-              <tr><td><code>HumanEval</code></td><td>0.868</td><td><b>0.721</b> (&minus;16.9%)</td><td>1.058 (+21.9%)</td><td>0.337</td></tr>
-              <tr><td><code>GSM8K</code></td><td>1.643</td><td><b>1.402</b> (&minus;14.7%)</td><td>1.591 (&minus;3.2%)</td><td>0.189</td></tr>
-              <tr><td><code>IFEval</code></td><td>1.366</td><td><b>1.324</b> (&minus;3.0%)</td><td>1.365 (&minus;0.0%)</td><td>0.041</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <h2 class="subtitle has-text-centered" style="margin-top: 1rem;">
-          Bits-per-byte on target tasks at two model scales; percentages are relative to the balanced baseline.
-        </h2>
       </div>
     </div>
   </div>
 </section>
-<!-- End validation -->
+<!-- End results -->
 
 
-<!-- Paper PDF -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Paper</h2>
-      <iframe src="static/pdfs/paper.pdf" width="100%" height="700">
-      </iframe>
-    </div>
-  </div>
-</section>
-<!-- End paper PDF -->
 
 
 <!--BibTex citation -->
@@ -364,11 +272,13 @@ function copyBibTeX() {
       <div class="column is-8">
         <div class="content">
 
+          <!--
           <p>
             This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
             You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
+          -->
 
         </div>
       </div>
