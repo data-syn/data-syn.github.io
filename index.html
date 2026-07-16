@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="We formalize and quantify data synergy in LLM pretraining with domain-aware scaling laws, estimating domain-to-benchmark and domain-domain interactions from open-weight models.">
+  <meta name="description" content="We formalize and quantify data synergy in LLM pretraining with domain-aware scaling laws, estimating domain-to-benchmark and domain-domain interactions from open-data models.">
   <meta property="og:title" content="Domain-Aware Scaling Laws Uncover Data Synergy"/>
-  <meta property="og:description" content="We formalize and quantify data synergy in LLM pretraining with domain-aware scaling laws, estimating domain-to-benchmark and domain-domain interactions from open-weight models."/>
+  <meta property="og:description" content="We formalize and quantify data synergy in LLM pretraining with domain-aware scaling laws, estimating domain-to-benchmark and domain-domain interactions from open-data models."/>
   <meta property="og:url" content="https://data-syn.github.io/"/>
   <meta property="og:image" content="static/images/intro_fig.png" />
   <meta property="og:image:width" content="1200"/>
@@ -96,7 +96,7 @@
 
           <div class="tldr-box">
             <span class="tldr-label">TL;DR</span>
-            Pretraining data domains interact, and <i>what kinds of data are combined</i> in pretraining matters. We extend scaling laws with per-domain and pairwise synergy terms, fit them on open-data models, and show the estimates help predict model performance, and curate better pretraining mixtures.
+            Pretraining data domains interact, and <i>what kinds of data are combined</i> in pretraining affects model performance. We extend scaling laws with per-domain and pairwise synergy terms, fit them on open-data models, and show the estimates help predict model performance, and are useful for curating better pretraining mixtures.
           </div>
         </div>
       </div>
@@ -144,7 +144,7 @@
         <h2 class="title is-3">Tokens are not interchangeable</h2>
         <div class="content has-text-justified">
           <p>
-            Classical scaling laws relate loss to parameter count and total tokens, and treat every token as equal. But models with the same total tokens and different mixtures land in very different places. On <code>HumanEval</code>, a single domain-agnostic exponent fits poorly (<i>R</i><sup>2</sup> = 0.17), while letting the exponent depend on the mixture fits almost perfectly (<i>R</i><sup>2</sup> = 1.00): removing code or math data visibly slows the rate at which more data helps.
+            Classical scaling laws relate loss to parameter count and total tokens, and treat every token as equal. But models with the same total tokens and different mixtures land in very different places. On <code>HumanEval</code>, having a single domain-agnostic data scaling exponent fits the data poorly (<i>R</i><sup>2</sup> = 0.17), while letting the exponent depend on the mixture fits almost perfectly (<i>R</i><sup>2</sup> = 1.00). Additionally, removing code data visibly slows the rate at which more data helps.
           </p>
         </div>
         <img src="static/images/scaling_comparison.png" alt="HumanEval loss vs. tokens: one shared scaling exponent fits poorly, per-mixture exponents fit well." style="width: 100%;"/>
@@ -166,7 +166,7 @@
         <h2 class="title is-3">Domain-aware scaling laws</h2>
         <div class="content has-text-justified">
           <p>
-            We start from the Chinchilla form <i>L</i>(<i>N</i>, <i>D</i>) = <i>L</i><sub>&infin;</sub> + <i>A&thinsp;N</i><sup>&minus;&alpha;</sup> + <i>B&thinsp;D</i><sup>&minus;&beta;</sup> and progressively make the <i>data</i> term composition-aware, while preserving the overall shape of the law.
+            We start from the Chinchilla scaling law <i>L</i>(<i>N</i>, <i>D</i>) = <i>L</i><sub>&infin;</sub> + <i>A&thinsp;N</i><sup>&minus;&alpha;</sup> + <i>B&thinsp;D</i><sup>&minus;&beta;</sup> and progressively modify the <i>data</i> term to depend on data composition and synergy, while preserving the overall shape of the law.
           </p>
           <p>
             <b>First-order domain&rarr;benchmark synergy.</b> Let <i>u<sub>k</sub></i> be the fraction of pretraining tokens drawn from domain <i>k</i>. Each domain gets a coefficient <i>&gamma;<sub>k</sub></i> that additively modifies the data scaling exponent, so its tokens reduce loss at rate <i>&beta;</i> + <i>&gamma;<sub>k</sub></i> instead of a single shared <i>&beta;</i>. Each domain rescales the data by a factor set by both its token share <i>u<sub>k</sub></i> and its absolute token count <i>u<sub>k</sub>D</i>:
@@ -183,7 +183,7 @@
             so the data term scales as (<i>D</i><sub>eff</sub>)<sup>&minus;&beta;</sup>: co-occurring synergistic domains contribute &ldquo;bonus tokens&rdquo; (<i>D</i><sub>eff</sub> &gt; <i>D</i>), while interfering pairs shrink the effective dataset.
           </p>
           <p>
-            <b>Estimation from observational data.</b> Rather than training a large controlled sweep, we fit these laws across 52 open-weight models (70M-20B parameters) from multiple groups (GPT-Neo/J/NeoX, Pythia, DataDecide, OLMo, OpenLLaMA, and RedPajama-INCITE), whose documented pretraining mixtures we map to eight domains (books, code, encyclopedia, legal, math, Q&amp;A, science, web) and evaluate on 11 benchmarks. 
+            <b>Estimation from observational data.</b> Rather than training a large controlled sweep, we fit these laws across 52 open-weight open-data models (70M-20B parameters) from multiple groups (GPT-Neo/J/NeoX, Pythia, DataDecide, OLMo, OpenLLaMA, and RedPajama-INCITE), whose documented pretraining mixtures we map to eight domains (books, code, encyclopedia, legal, math, Q&amp;A, science, web) and evaluate on 11 benchmarks. 
           </p>
         </div>
       </div>
@@ -210,7 +210,7 @@
         </h2>
         <div class="content has-text-justified">
           <p>
-            The second-order fit adds the pairwise story: code&nbsp;&times;&nbsp;science (<i>&sigma;</i> = +2.55) and code&nbsp;&times;&nbsp;math (+2.40) are the strongest complements, worth more together than their first-order effects predict, while math&nbsp;&times;&nbsp;books is the clearest diluting pair. That last one is actionable: if a target benchmark wants math, tokens spent on books are not merely neutral filler, they subtract.
+            The second-order fit adds the pairwise term. we find that code&nbsp;&times;&nbsp;science (<i>&sigma;</i> = +2.55) and code&nbsp;&times;&nbsp;math (+2.40) are the strongest complementary domains, and are worth more together than their first-order effects predict, while math&nbsp;&times;&nbsp;books is an interfering pair. If a target benchmark is synergistic with math, tokens spent on books are not merely neutral, but they acticely hurt model performance.
           </p>
         </div>
         <img src="static/images/synergy_so.png" alt="Pairwise domain-domain interaction matrix and the largest second-order synergies with confidence intervals." style="width: 100%;"/>
@@ -221,9 +221,9 @@
           <p>
             We show that these estimated synergies and the domain-aware scaling laws predict the performance of held-out models more accurately. Finally, these estimates are <i>actionable</i>. We use the fitted laws to predict optimal and anti-optimal pretraining mixtures for three target tasks and training models from scratch at 30M and 150M parameters, and find that the optimal mixture outperforms the anti-optimal by up to 31% bits-per-byte on <code>HumanEval</code> (relative to a balanced baseline).
           </p>
-          <p>
+          <!-- <p>
             These results turn the intuition that data composition matters into a measurable quantity we can optimize. We hope domain-aware scaling laws become a practical tool for curating pretraining mixtures, and a starting point for studying synergy across modalities, languages, and finer domain splits.
-          </p>
+          </p> -->
         </div>
       </div>
     </div>
